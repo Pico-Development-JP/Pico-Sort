@@ -12,6 +12,8 @@ class Sort{
 
   private $base_url;
   
+  private $content_dir;
+  
   // copied from pico source, $headers as array gives ability to add additional metadata, e.g. header image
   private function read_file_meta($content) {
     $headers = array('index' => 'Index');
@@ -35,6 +37,7 @@ class Sort{
   
   public function config_loaded(&$settings) {
     $this->base_url = $settings['base_url'];
+    $this->content_dir = ROOT_DIR . $settings["content_dir"];
   }
 
   public function get_pages(&$pages, &$current_page, &$prev_page, &$next_page) {
@@ -47,7 +50,7 @@ class Sort{
     foreach ($pages as $page) {
       $file_url = substr($page["url"], strlen($this->base_url));
       if($file_url[strlen($file_url) - 1] == "/") $file_url .= 'index';
-      $file_name = CONTENT_DIR . $file_url . ".md";
+      $file_name = $this->content_dir . $file_url . ".md";
       
       // get metadata from page
       if (file_exists($file_name)) {
