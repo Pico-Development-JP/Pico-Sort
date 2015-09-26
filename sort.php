@@ -29,7 +29,7 @@ class Sort{
     if (strlen($headers['index']) > 0) {
       $headers['index'] = (int)$headers['index'];
     } else {
-      $headers['index'] = 0;
+      $headers['index'] = PHP_INT_MAX;
     }
 
     return $headers;
