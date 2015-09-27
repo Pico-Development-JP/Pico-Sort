@@ -26,7 +26,9 @@ class Sort{
   public function get_page_data(&$data, $page_meta)
   {
     if(!$page_meta['index']){
-      $data['index'] = PHP_INT_MAX;
+      $data['index'] = BASE_INT;
+    }else if($page_meta['index'] < 0){
+      $data['index'] = BASE_INT - $page_meta['index'];
     }else{
       $data['index'] = $page_meta['index'];
     }
