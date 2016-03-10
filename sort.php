@@ -8,33 +8,44 @@
  * @version 1.0
  */
 // ref: https://github.com/szymonkaliski/Pico-Tags-Plugin/blob/master/pico_tags.php
-class Sort{
+class Sort extends AbstractPicoPlugin {
+
+  protected $enabled = false;
 
   private $base_url;
   
   private $content_dir;
   
-  public function config_loaded(&$settings) {
+  public function onConfigLoaded(array &$config)
+  {
     define('BASE_INT', 1000000);
   }
-  
-  public function before_read_file_meta(&$headers)
+
+  public function onMetaHeaders(array &$headers)
   {
   	$headers['index'] = 'Index';
   }
 
-  public function get_page_data(&$data, $page_meta)
+  public function onSinglePageLoaded(array &$pageData)
   {
-    if(!$page_meta['index']){
-      $data['index'] = BASE_INT;
-    }else if($page_meta['index'] < 0){
-      $data['index'] = BASE_INT - $page_meta['index'];
+    $meta = $pageData['meta'];
+    if(!$meta['index']){
+      $pageData['index'] = BASE_INT;
+    }else if($meta['index'] < 0){
+      $pageData['index'] = BASE_INT - $meta['index'];
     }else{
-      $data['index'] = $page_meta['index'];
+      $pageData['index'] = $meta['index'];
     }
+    var_dump($pageData['title']);
+    var_dump($pageData['index']);
   }
 
-  public function get_pages(&$pages, &$current_page, &$prev_page, &$next_page) {
+  public function onPagesLoaded(
+      array &$pages,
+      array &$currentPage = null,
+      array &$previousPage = null,
+      array &$nextPage = null
+  ) {
     usort($pages, function($a, $b) {
       $ar = false;
       if($a['index'] == $b['index']){
