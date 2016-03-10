@@ -36,8 +36,6 @@ class Sort extends AbstractPicoPlugin {
     }else{
       $pageData['index'] = $meta['index'];
     }
-    var_dump($pageData['title']);
-    var_dump($pageData['index']);
   }
 
   public function onPagesLoaded(
